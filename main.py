@@ -1,13 +1,13 @@
 from flask import Flask
-#from flask.ext.mongoengine import MongoEngine
+from flask.ext.mongoengine import MongoEngine
 
 application = Flask(__name__)
 application.name = 'yearplanco'
 
-application.config['MONGODB_SETTINGS'] = {'DB' : 'yearplanco' }
-application.config['SECRET_KEY'] = '79656172506c616e434f415049'
+application.config['MONGODB_SETTINGS'] = {'DB' : 'eventplan' }
+application.config['SECRET_KEY'] = 'bf8df11aecf7d514713596c62afc8e2d242e0f66e16cb'
 
-#db = MongoEngine( app )
+db = MongoEngine( application )
 
 from routes import *
 
