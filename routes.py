@@ -1,6 +1,6 @@
 # -*- coding utf-8 -*-
 
-from main import application
+from yearplan import application
 from model import *
 from flask import request, g, abort, url_for, jsonify, session, after_this_request
 from flask.ext.classy import FlaskView
