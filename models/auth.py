@@ -9,7 +9,8 @@ class Auth(BaseModel):
    password = db.StringField(max_length=255)
    # hash -> auth_id + session_id 
    hash = db.StringField()
-
-   def hash_password(self, email, password ):
+   
+   @staticmethod
+   def hash_password(email, password ):
       _hashed = hashlib.md5( email.lower() + password + app_salt )
       return _hashed.hexdigest()
