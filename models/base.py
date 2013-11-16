@@ -9,7 +9,7 @@ class BaseModel( db.Document):
    
    meta = {
 			  'allow_inheritance' : True ,
-			  'indexes' : ['-created_at', 'alive'],
+			  'indexes' : ['-created_at', 'alive','-updated_at'],
 			  'ordering': ['-created_at']
 	}
 

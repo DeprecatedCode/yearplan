@@ -1,6 +1,6 @@
 from flask import session, abort, jsonify
 from yearplan import application
-from api import AuthView , UserView, SheetView, EventView
+from api import AuthView , UserView, SheetView, EventView, common
 
 @application.errorhandler(400)
 def bad_request(error):
@@ -16,7 +16,11 @@ def resource_not_found(error):
    
 @application.errorhandler(405)
 def method_not_allowed(error):
-   return jsonify(ok=False, errors= ['Method Not allowed']), 404
+   return jsonify(ok=False, errors= ['Method Not allowed']), 405
+   
+@application.errorhandler(410)
+def resource_gone(error):
+   return jsonify(ok=False, errors= ['Resource deleted']), 410
 
 @application.errorhandler(501)
 def not_implemented(error):

@@ -2,3 +2,4 @@ Flask
 Flask-MongoEngine
 Flask-Script
 Flask-Classy
+Flask-Testing

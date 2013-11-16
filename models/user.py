@@ -5,10 +5,13 @@ from .entity import Entity
 class User( Entity ):
    email = db.StringField()
    
-   def __dict__(self):
-      return {
-            #'id' : self.id.__str__(),
-            'name' : self.name,
-            'email': self.email,
-            'uri' : url_for('UserView:get',id= self.id.__str__())
-         }
+   def to_json(self):
+      return dict(name=self.name,
+                  email=self.email,
+                  description=self.description,
+                  location=self.location,
+                  public=self.public,
+                  phone=self.phone,
+                  links=self.links,
+                  uri=url_for('UserView:get',id= self.id.__str__()),
+                 )

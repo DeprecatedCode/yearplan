@@ -10,4 +10,4 @@ class Entity(BaseModel):
    created_by = db.StringField()
    links = db.ListField( db.StringField())
    color = db.StringField()
-   tags = db.ListField( db.EmbeddedDocumentField('Tag') )
+   tags = db.ListField()
