@@ -32,8 +32,7 @@ class AuthView(FlaskView):
       auth.save()
       
       session.yearplan_user = str(auth.id) + str(_session.id)
-      
-      
+
       response = make_response( jsonify(ok=True), 200 )
       response.set_cookie('yearplan_user',value=auth.hash)
       response.headers['x-yearplan-user'] = auth.hash
@@ -42,8 +41,15 @@ class AuthView(FlaskView):
 
    @require_auth
    def delete(self):
-      #if 'yearplan_user' in session:
-      del session['user']
-      del session['yearplan_user']
-         
-      return jsonify(ok=True,msg= ['Session ended']),200
+      if 'x-yearplan-user' in request.headers:
+         try:
+            auth = Auth.objects.get(hash=request.headers['x-yearplan-user'])
+            auth.history.append(auth)
+            auth.hash = None
+            auth.save()
+            auth.alive = False
+            del session['user']
+            del session['yearplan_user']
+         except:
+            pass
+      return jsonify(ok=True),200

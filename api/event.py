@@ -1,6 +1,6 @@
 from flask import request, g, abort, jsonify
 from flask.ext.classy import FlaskView
-from models import Auth, User, Event
+from models import User, Event, Sheet
 from common import require_auth
 from datetime import datetime
 
@@ -14,7 +14,7 @@ class EventView(FlaskView):
       return jsonify(ok=True, objects=[ event.to_json() ]),200
    
    def delete(self, id):
-      event = Event.objects.get_or_404(id=id)
+      event = Event.objects.get_or_404(id=id,alive=True)
       event.alive=False
       event.updated_at = datetime.now()
       event.history.append( event )
@@ -42,3 +42,16 @@ class EventView(FlaskView):
       event.save()
       
       return jsonify(ok=True), 200
+   
+   def move(self,id):
+      """ Move an event from one sheet to another """
+      event = Event.objects.get_or_404(id=id, alive=True)
+      
+      destination_sheet = Sheet.objects.get_or_404(id=request.json['sheet']['id'])
+      # save current details in history 
+      event.history.append(event)
+      event.sheet = destination_sheet
+      event.updated_at = datetime.now()
+      event.save()
+      
+      return jsonify(ok=True,objects=[event.to_json()]),200

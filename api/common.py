@@ -13,3 +13,8 @@ def require_auth(f):
          abort(401)
       return f( *args, **kwargs )
    return decorator
+
+def hasPermissions(user):
+   
+   # check if the user has permissions on current model
+   user = User.objects.get_or_404()

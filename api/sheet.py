@@ -12,7 +12,7 @@ class SheetView(FlaskView):
    def index(self):
       sheets = Sheet.objects( alive = True )
       
-      return jsonify( ok=True,  objects=[ sheet.to_json() for sheet in sheets])
+      return jsonify( ok=True,  objects=[ sheet.to_json() for sheet in sheets]), 200
       
    def get(self, id):
       """ Get Sheet document with given id """
@@ -26,7 +26,9 @@ class SheetView(FlaskView):
          abort(400)
       
       # how do we get the user ? from a session
-      user = User.objects.get_or_404( id = request.json['user']['id'] )
+      _authenticated_user = request.headers.get('x-yearplan-user')
+      
+      user = Auth.objects.get_or_404( hash=_authenticated_user ).user;
       
       new_sheet = Sheet(name = request.json['name'],
                         description = request.json['description'],
@@ -47,8 +49,8 @@ class SheetView(FlaskView):
       return jsonify(ok=True, objects=[ user_sheet.to_json() ]), 200
 
    def put(self, id):
-      """  @todo Save Current data in History """
       """ Update sheet data and save current data in history  """
+      
       sheet = Sheet.objects.get_or_404( id = id )
       sheet.name = request.json['name']
       sheet.description = request.json['description']
