@@ -3,17 +3,36 @@ from entity import Entity
 from user import User
 from sheet import Sheet
 from flask import url_for
+from datetime import datetime
 
-class UserSheet( Entity ):
-   sheet = db.ReferenceField(Sheet)
-   user = db.ReferenceField( User )
-   starred = db.BooleanField(default=False)
+class UserSheet (Entity, db.Document):
+    sheet = db.ReferenceField(Sheet)
+    user = db.ReferenceField(User)
+    starred = db.BooleanField(default=False)
    
-   def to_json(self): 
-      return dict(name=self.name,
-                  sheet=self.sheet.to_json(),
-                  user = self.user.to_json(),
-                  public=self.sheet.public,
-                  starred=self.starred,
-                  alive=self.alive
-                 )
+    @staticmethod
+    def deleteSheet (aSheet):
+        try:
+            user_sheets = UserSheet.get(sheet=aSheet, alive=True)
+        except: 
+            return False
+        
+        for x in user_sheets :
+            x.alive = False
+            x.updated_at = datetime.now()
+            x.history.append( x )
+            x.save()
+        return True
+
+    def to_json(self): 
+        return dict(
+                    id=str(self.sheet.id),
+                    uri=url_for('SheetView:get',id= str(self.sheet.id)),
+                    name=self.sheet.name,
+                    description=self.sheet.description,
+                    links=self.sheet.links,
+                    color=self.sheet.color,
+                    public=self.public,
+                    starred=self.starred,
+                    created_by=self.sheet.created_by
+                    )
