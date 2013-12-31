@@ -1,0 +1,51 @@
+<div class="row" ui-view>
+    <div class="seven columns">
+    <form ng-submit="create()">
+        <p class="field">
+            <label for="name">Name</label>
+            <input type="text" class="input text" ng-model="sheet.name" />
+        </p>
+        <p class="field">
+            <label for="description">Description</label>
+            <textarea class="input text" ng-model="sheet.description"></textarea>
+        </p>
+        <p class="field">
+            <label for="location">Location</label>
+            <input type="text" class="input text" ng-model="sheet.location" />
+        </p>
+        <p class="field">
+            <label for="color">Color</label>
+            <input type="text" class="input text" ng-model="sheet.color" />
+        </p>
+        <p class="field">
+            <label for="links">Add Links</label>
+            <input type="text" class="input text" ng-model="newLink" ng-click="addLink()" />
+            
+            <ul ng-repeat="link in sheet.links" ng-animate="fade:enter">
+                <li>{{link}}</li>
+            </ul>
+        </p>
+        <p class="field">
+            <label for="">Tags</label>
+            <input style="content-editable: true" class="input text" ng-model="sheet.tags" ng-list />
+        </p>
+        <p class="field">
+            <label for="">Public</label>
+            <input type="checkbox" true" class="input text" ng-model="sheet.public" />
+        </p>
+        <p>
+            <p class="btn medium default rounded pretty pull_right">
+                <input type="submit" class="input text" value="Create" />
+            </p>
+        </p>
+    </form>
+    </div>
+    <div class="five columns pull_right">
+       <ul class="row" ng-repeat="sheet in sheets">
+       	<li>
+            <span class="one column" ng-bind="sheet.starred"></span>
+            <span class="four columns" ng-bind="sheet.name"></span>
+        </li>
+       </ul> 
+    </div>
+</div>

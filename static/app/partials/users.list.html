@@ -1,0 +1,26 @@
+<div ui-view>
+    <div class="users">
+        <h3>Users</h3>
+
+        <div class="yp-row row" ng-repeat="user in users">
+        
+        <div class="twelve columns">
+            <div class="eight columns">
+               <a ui-sref="users.detail({userId:user.id})">
+               {{ user.name }}
+               </a>
+           </div>
+           <div class="four columns">
+               <a ui-sref="users.detail({userId:user.id})">
+                   <i class="icon icon-eye"></i>
+                </a>
+               <a href=""><i class="icon icon-user"></i></a>
+               <a href=""><i class="icon icon-pencil"></i></a>
+               <a href=""><i class="icon icon-trash"></i></a>
+               
+           </div>
+           
+        </div>
+        </div>
+    </div>
+</div>

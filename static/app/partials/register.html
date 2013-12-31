@@ -1,0 +1,36 @@
+<div class="row" ui-view>
+	<div class="six columns centered">
+    <h2>Yearplan</h2>
+    <h4 class="text-center">Registration</h4>
+        
+        <ul>
+        <li class="field">
+            <p class="six columns">
+                <input class="input text" type="text" ng-model="firstname"  placeholder="Firstname"/>
+            </p>
+            <p class="six columns">
+                <input class="input text" type="text" ng-model="lastname"  placeholder="Lastname"/>
+            </p>
+		</li>
+        
+		<li class="prepend field">
+            <span class="adjoined">@</span>
+			<input class="xwide input email" type="email" ng-model="email" placeholder="you@email.com" />
+		</li>
+		<li class="prepend field">
+            <span class="adjoined"><i class="icon-lock"></i></span>
+			<input class="xwide input password" type="password" ng-model="password" placeholder="password" />
+		</li>
+        <li class="field clearfix">
+            <input class="input text" type="text" ng-model="location" placeholder="Location" />
+        </li>
+        <li class="field">
+        	<textarea class="input textarea" ng-model="description" placeholder="short bio"></textarea>
+        </li>
+
+		 </ul>  
+        <p class="btn primary pretty medium">
+            <a ui-sref="register" ng-click="register()">Register</a>
+        </p>
+	</div>
+</div>

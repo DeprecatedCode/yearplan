@@ -1,0 +1,35 @@
+<div class="" ui-view>
+<div class="sheets">
+    <div>
+        <h3 class="four columns">Sheets</h3>
+        <p class="btn medium primary pull_right">
+            <a ui-sref="sheets.create()">Create New Sheet</a>
+        </p>
+    </div>
+    <div class="sheet row" ng-repeat="sheet in sheets">
+    
+    <div class="twelve columns">
+        <div class="eight columns">
+            <div class="one column" >
+                <a href=""  ng-click="sheet.starred = !sheet.starred">
+                <i ng-class="{starred: sheet.starred, 'icon-star':sheet.starred, 'icon-star-empty': sheet.starred == false }"></i>
+               </a>
+           </div>
+           <a ui-sref="sheets.detail({sheetId:sheet.id})">
+           {{ sheet.name }}
+           </a>
+       </div>
+       <div class="four columns">
+           <a ui-sref="sheets.detail({sheetId:sheet.id})">
+               <i class="icon icon-eye"></i>
+            </a>
+           <a href=""><i class="icon icon-user"></i></a>
+           <a href=""><i class="icon icon-pencil"></i></a>
+           <a href=""><i class="icon icon-trash"></i></a>
+           
+       </div>
+       
+    </div>
+    </div>
+</div>
+</div>

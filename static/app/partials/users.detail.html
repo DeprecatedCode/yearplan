@@ -1,0 +1,28 @@
+<div>
+    <div class="users">
+        <h3>{{user.name}}</h3>
+        
+        <p class="field">
+            <label for="location">location</label>
+           {{user.location}}
+           <input type="text"  class="input text" ng-show="isDirty" ng-model="user.location"/>
+        </p>
+        <p>
+            <label for="phone">phone</label>
+           {{user.phone}}
+           <input type="text"  class="input text" ng-show="isDirty" ng-model="user.phone"/>
+        </p>
+        <p>
+            <label for="description">description</label>
+           {{user.description}}
+           <textarea type="text"  class="input text" ng-show="isDirty" ng-model="user.description"></textarea>
+        </p>
+        <p>
+           <ul>
+               <li ng-repeat="link in user.links">
+                    <a href="#">{{link}}</a>
+               </li>
+           </ul>
+        </p>
+    </div>
+</div>

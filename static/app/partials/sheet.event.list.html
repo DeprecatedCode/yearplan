@@ -1,0 +1,29 @@
+<div class="eight columns" ui-view>
+  <div class="sheet" ng-foreach="sheet in sheets">
+    
+    <div ui-view="name: 'sheet'"></div><!-- sheet-info -->
+    
+    <div class="events">
+    
+      <div class="wrapper" ng-repeat="event in sheet.events">
+        <div class="year-header">
+          <div class="wrapper">		
+            <div class="year">
+              <a href="#{{ sheet.uri }}">
+              {{ filter.year }}
+              </a>
+            </div>
+          </div><!--wrapper-->
+        </div><!--year-header-->
+        
+        <div class="blue-event">{{ event.date[0] }} : {{ event.name }}</div>
+      
+      </div><!--wrapper-->
+    </div><!-- ./events-->
+  </div><!-- ./sheet-events -->
+
+</div>
+
+<div class="four columns">
+
+</div>

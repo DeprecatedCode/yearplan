@@ -1,0 +1,43 @@
+/* Your custom SCSS should be written here... */
+/*
+* $primary-color: #3085d6;
+* $secondary-color: #42a35a;
+* $default-color: #f2f2f2;
+* $info-color: #4a4d50;
+* $danger-color: #ca3838;
+* $warning-color: #f6b83f;
+* $success-color: #58c026;
+*/
+.event {
+  border-radius: 4px;
+  font-weight: 400;
+  margin: 5px 0;
+  font-size: 1.23em;
+  padding: 10px;
+  text-shadow: #EEEEEE 0 1px 0; }
+
+.navbar {
+  background-color: #115790; }
+
+.events {
+  margin-top: 40px;
+  margin-bottom: 40px; }
+  .events .orange-event {
+    background: #ffae00;
+    color: #5b3e00;
+    text-shadow: #ffcd62 0 1px 0; }
+  .events .green-event {
+    background: #2eb52e;
+    color: #005900;
+    text-shadow: #4cdb4c 0 1px 0; }
+  .events .blue-event {
+    background: #2f7ebe;
+    color: #073d68;
+    text-shadow: #53a1e1 0 1px 0; }
+
+.starred { color: #EDC72C;}
+
+.sheets .sheet {
+   padding: 6px 0;
+   border-bottom: 1px solid rgba(200,200,200,0.23);
+}

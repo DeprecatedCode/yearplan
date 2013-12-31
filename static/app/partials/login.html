@@ -1,0 +1,26 @@
+<div ng-controller="authentication" ui-view>
+  <div class="four columns centered" id="login-screen" style="padding: 4px 6px;background-color:#DDDDDD">
+  <p>
+    
+    <h1>Yearplan</h1>
+    <form ng-submit="login()">
+    
+    <div class="controls-row field">
+      <label for="email">Email</label>
+      <input class="input" type="text" ng-model="email"/>
+    </div>
+    
+    <div class="controls-row field">  
+      <label for="password">Password</label>
+      <input class="input" type="password" ng-model="password" />
+    </div>
+    
+    <div class="btn pretty primary medium rounded">  
+      <button type="submit">Login</button>
+    </div>
+    
+    </form>
+    
+  </p>
+  </div><!-- #login-screen -->
+</div><!-- wrapper -->
