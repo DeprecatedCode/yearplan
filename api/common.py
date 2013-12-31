@@ -1,5 +1,6 @@
 from yearplan import application
 from flask import session, abort, request, g, jsonify
+from flask.ext.mongoengine import DoesNotExist
 from models import Auth
 
 def require_auth (f):

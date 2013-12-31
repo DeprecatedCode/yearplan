@@ -17,15 +17,18 @@ class SheetView (FlaskView):
     def get (self, id):
         """ Get Sheet document with given id if user is allowed """
         user = Auth.getUser()
-        
-        user_sheet = UserSheet.objects.get_or_404(sheet={'id':id},
-                                            user=user,
-                                            alive =True
-                                            )
-        sheet = user_sheet.sheet
-        
-        return jsonify(ok=True, objects=[sheet.to_json()]), 200
-
+        try:
+            sheet = Sheet.objects.get(id=id)
+            
+            
+            #check if the user has privileges to view this sheet
+            user_sheet = UserSheet.objects.get(sheet=sheet, user=user, alive=True)
+            if (user_sheet) :
+                return jsonify(ok=True, objects=[user_sheet.to_json()]), 200
+        except:
+            pass
+        abort(404)
+            
     def post (self):
         """ Create a Sheet with given JSON """
         user = Auth.getUser()
@@ -33,11 +36,11 @@ class SheetView (FlaskView):
         new_sheet = Sheet(
                         name = request.json['name'],
                         description = request.json['description'],
-                        location = request.json['location'],
-                        public = request.json['public'],
-                        links = request.json['links'],
-                        color = request.json['color'],
-                        tags = request.json['tags']
+                        #location = request.json.get('location',None),
+                        public = request.json.get('public', True),
+                        links = request.json.get('links', []),
+                        color = request.json.get('color', None),
+                        tags = request.json.get('tags', None)
                         )
         
         new_sheet.created_by = user

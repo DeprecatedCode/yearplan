@@ -130,3 +130,13 @@ class UserView (FlaskView):
         
         return jsonify(ok=True, objects=events)
 
+    @require_auth
+    def profile(self):
+        ''' get the profile of the currently authenticated user '''
+        try:
+            user = Auth.getUser() # @Todo rename this to getLoggedInUser()
+            return jsonify(ok=True, objects=[user.to_json()]), 200
+        except:
+            # @Todo
+            pass
+        abort(500)

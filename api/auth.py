@@ -46,7 +46,8 @@ class AuthView (FlaskView):
         except:
             pass
             
-        abort(401)    
+        return jsonify(ok=False,objects=['Invalid email and password combination']), 401
+        
     @require_auth
     def delete (self):
         api_token = request.headers.get('X-yearplan-user', None)
