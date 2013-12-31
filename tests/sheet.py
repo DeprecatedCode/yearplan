@@ -1,109 +1,109 @@
 from flask.ext.testing import TestCase
 from apptest import AppTest
-from data.user_test_data import * 
 import json
 
 class SheetTest(AppTest):
    
+   sheet_fixture = dict(
+         name = 'Developer Events',
+         description ='stuff like hackathons and meetups ',
+         location ='anywhere',
+         phone = None,
+         public = True,                        
+         links = None,
+         color = '#F0F0F0',
+         tags = ['meetups', 'conferences', 'hackathons']
+   )
+
    def test_index(self):
       # user who is not authenticated
-      response = self.client.get('/sheet/',headers=self.app_headers)
-      
+      response = self.client.get('/sheet/',
+                                 headers={'Content-Type':'application/json'})
       self.assert401(response)
       
       # valid user
-      guido['api_token'] = self.authenticateUser( guido )
+      self.app_headers['X-yearplan-user'] = self.authenticateUser( guido )
       
-      self.app_headers['x-yearplan-user'] =  guido['api_token']
+      response2 = self.client.get('/sheet/', headers= self.app_headers)
       
-      response = self.client.get('/sheet/', headers= self.app_headers)
+      self.assert200(response2)
+      self.assertIsNotNone( response2.json['objects'])
+      self.assertTrue( response2.json['ok'] )
       
-      self.assert200(response)
-      self.assertIsNotNone( response.json['objects'])
-      self.assertTrue( response.json['ok'] )
-      
-   def test_get(self):
-      
-      # Unauthenticated user
-      response = self.client.get('/sheet/<id>')
-      
-      self.assert401(response)
-      
-      self.app_headers['x-yearplan-user'] = self.authenticateUser( guido )
-      
-      response = self.client.get('/sheet/<id>', headers=self.app_headers)
-      
-      self.assert200(response)
-      self.assertIsNotNone(response.json['objects'])
-      self.assertTrue(response.json['ok'])
-      
-   def test_post(self):
-      
-      response = self.client.post('/sheet/')
-      
-      self.assert401(response)
-      
-      self.assertFalse( response.json['ok'])
-      
-      self.app_headers['x-yearplan-user'] = self.authenticateUser( guido )
+   def test_creating_and_then_retrieving_a_sheet(self):
+        user_fixture = dict(
+            name="James"
+            email= "guido.van.awesome@python.org",
+            password="lovesMontyPython",
+            description="Python",
+            links=[],
+            location="Dropbox",
+            phone="0800-AWESOME"
+        )
+        response1 = self.client.post('/user/',
+                                data=json.dumps( user_fixture ),
+                                headers=self.app_headers )
+        self.assert201( response1 )
+        self.assertIsNotNone( response1.json['objects'] )
+        self.assertGreaterThan(1, len(response1.json['objects'][0]['uri']) )
+        
+        user_fixture['api_token'] = self.authenticateUser(user_fixture)
 
-      response = self.client.post('/sheet/', headers=self.app_headers)
 
-      self.assert201( response )
-      self.assertIsNotNone(response.json['objects'])
-      self.assertTrue(response.json['ok'])
-      respData = response.json['objects'][0]
-      
-      self.assertEquals( data['title'], respData['title'])
-      self.assertEquals( data['title'], respData['title'])
-      
-      self.assertIsNotNone( respData['uri'] )
-      
-      self.assert200( self.client.get( respData['uri'],headers=self.app_headers))
+        sheet_fixture = dict(
+            name = 'Developer Events',
+            description ='stuff like hackathons and meetups ',
+            location ='anywhere',
+            phone = None,
+            public = True,                        
+            links = None,
+            color = '#F0F0F0',
+            tags = ['meetups', 'conferences', 'hackathons']
+        )
+        
+        res1 = self.client.post('/sheet/', 
+                        data=json.dumps(sheet_fixture),
+                        headers = {
+                            'Content-Type' : 'application/json',
+                            'X-yearplan-user' : user_fixture['api_token']
+                            }
+                        )
+        self.assertIsNotNone(res1.json.get('objects', None))
+        self.assertGreaterThan(1, len(response1.json['objects']))
+        self.assertIsNotNone(res1.json['objects'][0]['uri'])
 
-   def test_put(self):
-      test_data= dict()
-      
-      response = self.client.put('/sheet/:id', data=test_data)
-      
-      self.assert401(response)
-      
-      self.assertFalse( response.json['ok'])
-      
+        
+        retrieve = self.client.post(obj['uri'], 
+                        headers = {
+                            'Content-Type' : 'application/json',
+                            'X-yearplan-user' : user_fixture['api_token']
+                            }
+                        )
+        obj = retrieve.json['objects'][0]
+        
+        self.assertIsNotNone(obj.get('uri', None))
+        self.assertEqual(sheet_fixture['name'], obj['name'])
+        self.assertEqual(sheet_fixture['description'], obj['description'])
+        self.assertEqual(sheet_fixture['tags'], obj['tags'])
 
-      response = self.client.put('/sheet/:id', headers=self.app_headers)
+    def test_updating_details_of_sheet(self):
+        pass
       
-      self.assert200( response )
-      
-      response = self.client.get( test_data['uri'],headers=valid_headers)
-      
-      self.assertIsNotNone(response.json['objects'])
-      
-      self.assertTrue(response.json['ok'])
-      respData = response.json['objects'][0]
-      
-      self.assertEquals( test_data['title'], respData['title'])
-      self.assertEquals( test_data['title'], respData['title'])
-      self.assertEquals( test_data['uri'], respData['uri'])
-      
-   def test_delete(self):
-      self.app_headers['x-yearplan-user'] = self.authenticateUser( guido )
-      response = self.client.delete('/sheet/:id')
-      
-      self.assert200(response)
+    def test_deleting_a_sheet(self):
+        pass
 
-   def test_add_sheet_users(self):
-      pass
+    def test_adding_sheet_users(self):
+        pass
    
-   def test_preferences(self):
-      pass
+    def test_updating_a_users_sheet_preferences(self):
+        pass
    
-   def test_sheet_events(self):
-      pass
+    def test_retrieving_trashed_sheets(self):
+        pass
    
-   def test_sheet_trash(self):
-      pass
+    def test_retrieving_a_sheets_events(self):
+        pass
    
-   def test_sheet_event_trash(self):
-      pass
+    def test_sheet_event_trash(self):
+        pass
 
