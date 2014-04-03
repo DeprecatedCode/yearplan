@@ -1,47 +1,49 @@
 'use strict';
 angular.module('yearplan.controllers').
-    controller('sheetListCtrl',
-    [        '$scope', 'Sheet',
-    function( $scope , Sheet) {
-        var path = '/sheet/';
-        
-        $scope.sheets = Sheet.query(function(resp){
-            $scope.sheets = resp.objects;
-        });
-        
-        $scope.create = function(){
-            
+    controller('SheetsController',
+    [        '$scope', 'Sheet', '$state',
+    function( $scope , Sheet, $state) {
+       
+        $scope.sheet = {};
+        $scope.save = function(){
+            //$scope.sheets.push( $scope.sheet );
+            /**
+             * @todo Send data to actual server 
+             *
+             */
             var sheet = new Sheet($scope.sheet);
-            
-            sheet.$save();
+            sheet.$save(
+              function(resp){
+                var sh = resp.objects.pop();
+                $state.go('sheets.detail', sh.id)
+            });
         }
         
-        
-    }])
-    .controller('sheetDetailCtrl',
-    [        '$scope', '$stateParams', 'Sheet',
-    function( $scope , $stateParams, Sheet) {
-        // @Todo
-        $scope.create = function(){
-        
-            var sheet = new Sheet($scope.sheet);
+        $scope.remove = function(aSheet) {
+            $scope.slice(aSheet);
             
-            sheet.$save();
+            /**
+             *  @todo dispatch an HTTP request to remove the sheet
+             */
         }
-        
+
         function init(sheetId) {
             var sheet = new Sheet({id: sheetId});
             
             sheet.$get(function(resp){
-                console.log(resp);
-                $scope.sheet = resp;
+                $scope.sheet = resp.objects[0];
             });
+            $state.go('sheets.detail.events');
         }
         
+        if ( $state.params.sheetId ) {
+            init($state.params.sheetId);
+        }
         
-        init($stateParams.sheetId);
-        
-        
+        // get the sheets
+        Sheet.query(function(resp){
+                $scope.sheets = resp.objects;
+        });
         
     }]);
     

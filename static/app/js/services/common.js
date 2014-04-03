@@ -7,6 +7,6 @@
  * */
 angular.module('yearplan.services').value('yearplanTransformer', 
     function(data, headers){
-        //var r = $.parseJSON(data);
-        return data.objects;
+        var r = $.parseJSON(data);
+        return r.objects;
 });

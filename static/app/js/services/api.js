@@ -3,9 +3,9 @@
 angular.module('yearplan.services').factory('api', function ($http, $cookies) {
     return {
 
-        initialize : function(cfg){
+        initialize : function(data){
             
-            $http.defaults.headers.common['X-yearplan-user'] = cfg.token || $cookies.yearplan_user;
+            $http.defaults.headers.common['X-yearplan-user'] = data.token || $cookies.yearplan_user;
         },
         terminate : function(callback){
             

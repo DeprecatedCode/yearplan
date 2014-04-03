@@ -3,7 +3,7 @@ angular.module('yearplan.services').
 factory('User', ['$http', 'yearplanTransformer', function ($http, transformer) {
     var path = '/user/';
     
-    $http.defaults.transformResponse.push( transformer );
+    //$http.defaults.transformResponse.push( transformer );
     
     var User = function(value){
         angular.copy(value || {}, this);
@@ -45,7 +45,7 @@ factory('User', ['$http', 'yearplanTransformer', function ($http, transformer) {
                 var d = $.parseJSON(data);
 
                 if( d.objects.length > 0) {
-                    return d.objects[0];
+                    return new User(d.objects[0]);
                 }
             }
         }).then(callback);
@@ -80,7 +80,8 @@ factory('User', ['$http', 'yearplanTransformer', function ($http, transformer) {
         return $http({
             data : data,
             url : path,
-            method : 'GET'
+            method : 'GET',
+            transformResponse : transformer
         }).error(error).then(success);
     }
    

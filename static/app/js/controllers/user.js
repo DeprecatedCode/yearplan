@@ -4,8 +4,6 @@ angular.module('yearplan.controllers').
         function ($scope, $state, User) {
 
             $scope.register = function () {
-                var path = '/user/';
-                
                 var newUser = {
                     name: [$scope.firstname, $scope.lastname].join(' '),
                     email : $scope.email,
@@ -25,13 +23,11 @@ angular.module('yearplan.controllers').
     controller('userListCtrl',
     [        '$scope', '$stateParams', 'User',
     function( $scope , $stateParams, User) {
-        function init() {
-            User.query(function(resp){
-                $scope.users = resp.data;
-            });
-        }
-        
-        init();
+
+        User.query(function(resp){
+            $scope.users = resp.data;
+        });
+
     }]).
     controller('userDetailCtrl',
     [        '$scope', '$stateParams', 'User',

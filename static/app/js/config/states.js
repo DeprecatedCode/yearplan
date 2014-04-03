@@ -4,8 +4,7 @@ angular.module('yearplan').
   config(['$stateProvider', '$urlRouterProvider',
     function ($stateProvider, $urlRouterProvider) {
         
-        $urlRouterProvider.when('/login','/' ).
-            otherwise('/home');
+        $urlRouterProvider.otherwise('/');
         
         $stateProvider.state('auth', {
             url : '/',
@@ -18,24 +17,22 @@ angular.module('yearplan').
             controller: 'registration'
         }).
         state('home', {
-            url: '/',
+            url: '/home',
             templateUrl: 'partials/home.html'
         }).
         state('sheets', {
             url : '/sheets',
             templateUrl: 'partials/sheets.list.html',
-            controller : 'sheetListCtrl'
+            controller : 'SheetsController'
         }).
         state('sheets.create', {
             url : '/create',
-            parent: 'sheets',
             templateUrl : 'partials/sheets.edit.html'
         }).
         state('sheets.detail', {
             url : '/{sheetId:[a-f0-9]*}',
-            parent: 'sheets',
+            controller : 'SheetsController',
             templateUrl : 'partials/sheets.detail.html',
-            controller : 'sheetDetailCtrl'
         }).
         state('users', {
             url : '/users',
@@ -48,22 +45,25 @@ angular.module('yearplan').
             templateUrl : 'partials/users.detail.html',
             controller: 'userDetailCtrl'
         }).
-        state('sheets.events', {
-            url : '/events',
-            parent: 'sheets.detail',
-            templateUrl : 'partials/events.list.html',
-            controller : 'eventListCtrl'
+        state('users.sheets', {
+            templateUrl : 'partials/users.detail.html',
+            controller: 'SheetListCtrl'
         }).
-        state('sheets.events.create', {
+        state('sheets.detail.events', {
+            //url : '/events',
+            templateUrl : 'partials/events.list.html',
+            controller : 'EventsController'
+        }).
+        state('sheets.detail.events.create', {
             url : '/create',
             templateUrl : 'partials/events.edit.html',
-            controller : 'eventListCtrl'
+            controller : 'EventsController'
         }).
-        state('sheets.events.detail', {
-            url : '/:sheetId/events/:eventId',
+        state('sheets.detail.events.detail', {
+            url : '/events/:eventId',
             parent : 'sheets',
             templateUrl: 'partials/events.detail.html',
-            controller: 'eventDetailCtrl'
+            controller: 'EventsController'
         });
     }]);
     

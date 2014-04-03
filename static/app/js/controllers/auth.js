@@ -5,6 +5,7 @@ angular.module('yearplan.controllers').
         function ($scope, $state, Auth) {
             $scope.loggedIn = false;
             
+            $scope.user = {};
             /* http://beletsky.net/2013/11/simple-authentication-in-angular-dot-js-app.html */
             $scope.login = function() {
                 
@@ -54,5 +55,7 @@ angular.module('yearplan.controllers').
                     }
                 });
             }
+            
+            init();
         }
     ]);
