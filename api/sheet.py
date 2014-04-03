@@ -10,24 +10,23 @@ class SheetView (FlaskView):
     decorators = [ require_auth ]
     
     def index (self):
-        sheets = Sheet.objects( alive = True )
+        sheets = UserSheet.objects( alive = True )
         
         return jsonify( ok=True,  objects=[ sheet.to_json() for sheet in sheets]), 200
 
     def get (self, id):
         """ Get Sheet document with given id if user is allowed """
         user = Auth.getUser()
-        try:
-            sheet = Sheet.objects.get(id=id)
-            
-            
-            #check if the user has privileges to view this sheet
-            user_sheet = UserSheet.objects.get(sheet=sheet, user=user, alive=True)
-            if (user_sheet) :
-                return jsonify(ok=True, objects=[user_sheet.to_json()]), 200
-        except:
-            pass
-        abort(404)
+        #try:
+        sheet = Sheet.objects.get(id=id)
+
+        #check if the user has privileges to view this sheet
+        user_sheet = UserSheet.objects.get(sheet=sheet, user=user, alive=True)
+        if (user_sheet) :
+            return jsonify(ok=True, objects=[user_sheet.to_json()]), 200
+        #except:
+        #    pass
+        #abort(404)
             
     def post (self):
         """ Create a Sheet with given JSON """
@@ -115,18 +114,19 @@ class SheetView (FlaskView):
             _sheetEvents = Event.objects(sheet=sheet, alive=True)
             
             _events = [e.to_json() for e in _sheetEvents ]
-            return jsonify(ok=True, objects=[ _events ]),200
+            return jsonify(ok=True, objects=_events),200
         
         if request.method == 'POST':
             
             new_event = Event( 
-                            dates = request.json['dates'],
+                            dates = request.json.get('dates',[]),
                             name = request.json['name'],
+                            event_date = request.json['event_date'],
                             description = request.json['description'],
                             location = request.json['location'],
-                            public = request.json['public'],
-                            links = request.json['links'],
-                            color = request.json['color'],
+                            public = request.json.get('public',True),
+                            links = request.json.get('links',[]),
+                            color = request.json.get('color','#fff'),
                             tags = request.json['tags'],
                             alive = True,
                             created_by = str(sheet.created_by),
